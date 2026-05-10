@@ -28,4 +28,4 @@ def detectar_ataque(dados):
 
     # Caso nenhuma condição suspeita seja encontrada
     else:
-        return "✔ Actividade Normal"
+        return "✔ Actividade Normal" 

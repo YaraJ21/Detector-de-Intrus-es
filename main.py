@@ -3,7 +3,7 @@
 import time
 
 # Importa a função gerar_dados do arquivo collector.py
-from collector import gerar_dados # type: ignore
+from colector import gerar_dados # type: ignore
 
 # Importa a função detectar_ataque do arquivo detector.py
 from detector import detectar_ataque

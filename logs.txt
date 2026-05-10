@@ -1,0 +1,34 @@
+⚠ Possível Ataque de Phishing
+⚠ Ataque de Força Bruta Detectado
+⚠ Ataque de Força Bruta Detectado
+✔ Actividade Normal
+⚠ Ataque de Força Bruta Detectado
+⚠ Ataque de Força Bruta Detectado
+⚠ Ataque de Força Bruta Detectado
+⚠ Ataque DDoS Detectado
+⚠ Ataque de Força Bruta Detectado
+⚠ Ataque de Força Bruta Detectado
+✔ Actividade Normal
+⚠ Ataque de Força Bruta Detectado
+⚠ Ataque de Força Bruta Detectado
+⚠ Ataque de Força Bruta Detectado
+⚠ Ataque de Força Bruta Detectado
+⚠ Ataque de Força Bruta Detectado
+✔ Actividade Normal
+⚠ Ataque de Força Bruta Detectado
+⚠ Ataque de Força Bruta Detectado
+⚠ Ataque de Força Bruta Detectado
+⚠ Ataque de Força Bruta Detectado
+⚠ Ataque de Força Bruta Detectado
+⚠ Ataque DDoS Detectado
+⚠ Ataque de Força Bruta Detectado
+⚠ Ataque DDoS Detectado
+⚠ Ataque de Força Bruta Detectado
+⚠ Ataque de Força Bruta Detectado
+⚠ Ataque de Força Bruta Detectado
+⚠ Ataque de Força Bruta Detectado
+⚠ Possível Ransomware Detectado
+⚠ Ataque DDoS Detectado
+⚠ Ataque DDoS Detectado
+⚠ Ataque de Força Bruta Detectado
+⚠ Actividade Suspeita na Rede
