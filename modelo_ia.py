@@ -69,3 +69,8 @@ print("Precisão:", precisao)
 #Guardar modelo treinado
 joblib.dump(modelo, "modelo_treinado.pkl")
 print("Modelo guardado com sucesso")
+
+#Data: 25/05/2026
+
+joblib.dump(encoder, "encoder.pkl")
+print("Modelo guardado com sucesso")
