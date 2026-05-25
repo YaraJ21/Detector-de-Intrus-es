@@ -1,31 +1,45 @@
-# Função responsável por analisar os dados da rede
-# e identificar possíveis ataques cibernéticos
+
+# DETECTOR DE ATAQUES
+
+
 def detectar_ataque(dados):
 
-    # Verifica se existem muitas tentativas de login
-    # Pode indicar ataque de força bruta
-    if dados["tentativas_login"] > 20:
-        return "⚠ Ataque de Força Bruta Detectado"
+    ataque = dados["label"]
 
-    # Verifica excesso de requisições na rede
-    # Pode indicar ataque DDoS
-    elif dados["requisições"] > 3000:
+    # TRÁFEGO NORMAL
+  
+
+    if ataque == "BENIGN":
+
+        return "✔ Actividade Normal"
+
+  
+    # DDOS
+   
+
+    elif "DoS" in ataque or "DDoS" in ataque:
+
         return "⚠ Ataque DDoS Detectado"
 
-    # Verifica acessos excessivos a arquivos
-    # Pode indicar ransomware
-    elif dados["acesso_arquivos"] > 150:
-        return "⚠ Possível Ransomware Detectado"
+    
+    # PORTSCAN
+   
 
-    # Verifica muitos links suspeitos
-    # Pode indicar phishing
-    elif dados["links_phishing"] > 5:
-        return "⚠ Possível Ataque de Phishing"
+    elif "PortScan" in ataque:
 
-    # Verifica quantidade elevada de IPs suspeitos
-    elif dados["ips_suspeitos"] > 10:
-        return "⚠ Actividade Suspeita na Rede"
+        return "⚠ Port Scan Detectado"
 
-    # Caso nenhuma condição suspeita seja encontrada
+    
+    # BOTNET
+    # 
+
+    elif "Bot" in ataque:
+
+        return "⚠ Botnet Detectada"
+
+    # OUTROS ATAQUES
+    
+
     else:
-        return "✔ Actividade Normal" 
+
+        return f"⚠ Ataque Detectado: {ataque}"
