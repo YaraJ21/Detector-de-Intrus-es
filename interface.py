@@ -1,102 +1,315 @@
-# Importa a biblioteca gráfica tkinter
+# SISTEMA DE DETECÇÃO DE INTRUSÕES
+# INTERFACE GRÁFICA
+# Biblioteca gráfica
 import tkinter as tk
 
-# Importa funções do projecto
+# Data e hora
+from datetime import datetime
+
+# Gráficos
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+from matplotlib.figure import Figure
+
+# Importa módulos do projecto
 from colector import gerar_dados
 from detector import detectar_ataque
 
 
-# Função responsável por atualizar os dados na interface
+# LISTAS DO GRÁFICO
+
+
+x_dados = []
+y_dados = []
+
+
+
+# FUNÇÃO PRINCIPAL
+
+
 def atualizar_dados():
 
-    # Gera novos dados da rede
+    # Gera dados reais
     dados = gerar_dados()
 
-    # Detecta possíveis ataques
+    # Detecta ataque
     resultado = detectar_ataque(dados)
 
-    # Actualiza os textos da interface
-    login_label.config(
-        text=f"Tentativas de Login: {dados['tentativas_login']}"
-    )
+    # ACTUALIZA LABELS
+    
 
     requisições_label.config(
-        text=f"Requisições: {dados['requisições']}"
+        text=f"Pacotes Enviados: {dados['requisições']}"
     )
 
-    arquivos_label.config(
-        text=f"Acesso a Arquivos: {dados['acesso_arquivos']}"
+    duração_label.config(
+        text=f"Duração do Fluxo: {dados['duração']}"
     )
 
-    ips_label.config(
-        text=f"IPs Suspeitos: {dados['ips_suspeitos']}"
+    retorno_label.config(
+        text=f"Pacotes de Retorno: {dados['pacotes_retorno']}"
     )
 
-    phishing_label.config(
-        text=f"Links de Phishing: {dados['links_phishing']}"
+    tipo_label.config(
+        text=f"Tipo Detectado: {dados['label']}"
     )
+
+    # CORES DOS ALERTAS
+
+
+    cor_alerta = "lime"
+
+    if "DDoS" in resultado:
+        cor_alerta = "red"
+
+    elif "Port" in resultado:
+        cor_alerta = "orange"
+
+    elif "Bot" in resultado:
+        cor_alerta = "purple"
+
+
+    # RESULTADO
+   
 
     resultado_label.config(
-        text=f"Resultado: {resultado}"
+        text=f"Resultado: {resultado}",
+        fg=cor_alerta
     )
 
-    # Atualiza os dados novamente após 3 segundos
+  
+    # RELÓGIO
+  
+
+    hora_actual = datetime.now().strftime("%H:%M:%S")
+
+    relógio_label.config(
+        text=f"Hora: {hora_actual}"
+    )
+
+   
+    # HISTÓRICO
+  
+
+    histórico.insert(
+        tk.END,
+        f"[{hora_actual}] {resultado}\n"
+    )
+
+    histórico.see(tk.END)
+
+    # ACTUALIZA GRÁFICO
+   
+
+    x_dados.append(len(x_dados))
+
+    y_dados.append(dados["requisições"])
+
+    if len(x_dados) > 15:
+
+        x_dados.pop(0)
+
+        y_dados.pop(0)
+
+    gráfico.clear()
+
+    gráfico.plot(x_dados, y_dados)
+
+    gráfico.set_title("Tráfego da Rede")
+
+    gráfico.set_ylabel("Pacotes")
+
+    canvas.draw()
+
+    # GUARDA LOGS
+    #
+
+    with open("logs.txt", "a", encoding="utf-8") as log:
+
+        log.write(f"[{hora_actual}] {resultado}\n")
+
+    
+    # ACTUALIZA NOVAMENTE
+   
+
     janela.after(3000, atualizar_dados)
 
 
-# Cria a janela principal
+
+# CRIA JANELA
+
 janela = tk.Tk()
 
-# Define título da janela
-janela.title("Sistema de Detecção de Intrusões")
+janela.title("CyberShield AI - IDS")
 
-# Define tamanho da janela
-janela.geometry("500x400")
+janela.geometry("900x700")
 
-# Cor de fundo
-janela.configure(bg="#1e1e1e")
+janela.configure(bg="#0f172a")
 
 
-# Título principal
+# TÍTULO
+
+
 titulo = tk.Label(
     janela,
-    text="Sistema Inteligente IDS",
-    font=("Arial", 18, "bold"),
-    bg="#1e1e1e",
+    text="CYBERSHIELD AI",
+    font=("Arial", 24, "bold"),
+    bg="#0f172a",
+    fg="cyan"
+)
+
+titulo.pack(pady=10)
+
+# STATUS
+
+status_label = tk.Label(
+    janela,
+    text="🟢 SISTEMA ONLINE",
+    font=("Arial", 14, "bold"),
+    bg="#0f172a",
+    fg="lime"
+)
+
+status_label.pack()
+
+
+
+# RELÓGIO
+
+
+relógio_label = tk.Label(
+    janela,
+    text="Hora:",
+    font=("Arial", 12),
+    bg="#0f172a",
     fg="white"
 )
 
-titulo.pack(pady=15)
+relógio_label.pack(pady=5)
+
+# FRAME DOS DADOS
+
+frame_dados = tk.Frame(
+    janela,
+    bg="#1e293b",
+    bd=2,
+    relief="ridge"
+)
+
+frame_dados.pack(pady=15, padx=20, fill="x")
+
+# LABELS DOS DADOS
 
 
-# Labels para mostrar os dados
-login_label = tk.Label(janela, font=("Arial", 12), bg="#1e1e1e", fg="white")
-login_label.pack(pady=5)
+requisições_label = tk.Label(
+    frame_dados,
+    font=("Arial", 12),
+    bg="#1e293b",
+    fg="white"
+)
 
-requisições_label = tk.Label(janela, font=("Arial", 12), bg="#1e1e1e", fg="white")
 requisições_label.pack(pady=5)
 
-arquivos_label = tk.Label(janela, font=("Arial", 12), bg="#1e1e1e", fg="white")
-arquivos_label.pack(pady=5)
 
-ips_label = tk.Label(janela, font=("Arial", 12), bg="#1e1e1e", fg="white")
-ips_label.pack(pady=5)
+duração_label = tk.Label(
+    frame_dados,
+    font=("Arial", 12),
+    bg="#1e293b",
+    fg="white"
+)
 
-phishing_label = tk.Label(janela, font=("Arial", 12), bg="#1e1e1e", fg="white")
-phishing_label.pack(pady=5)
+duração_label.pack(pady=5)
+
+
+retorno_label = tk.Label(
+    frame_dados,
+    font=("Arial", 12),
+    bg="#1e293b",
+    fg="white"
+)
+
+retorno_label.pack(pady=5)
+
+
+tipo_label = tk.Label(
+    frame_dados,
+    font=("Arial", 12),
+    bg="#1e293b",
+    fg="white"
+)
+
+tipo_label.pack(pady=5)
+
+# RESULTADO
+
 
 resultado_label = tk.Label(
     janela,
-    font=("times new roman", 14, "bold"),
-    bg="#1e1e1e",
-    fg="red"
+    text="",
+    font=("Arial", 16, "bold"),
+    bg="#0f172a"
 )
 
 resultado_label.pack(pady=20)
 
 
-# Inicia atualização automática
+# HISTÓRICO
+#
+
+histórico_titulo = tk.Label(
+    janela,
+    text="Histórico de Alertas",
+    font=("Arial", 14, "bold"),
+    bg="#0f172a",
+    fg="cyan"
+)
+
+histórico_titulo.pack()
+
+
+histórico = tk.Text(
+    janela,
+    height=8,
+    bg="black",
+    fg="lime",
+    font=("Consolas", 10)
+)
+
+histórico.pack(padx=20, pady=10, fill="x")
+
+# GRÁFICO
+
+figura = Figure(figsize=(6, 3), dpi=100)
+
+gráfico = figura.add_subplot(111)
+
+canvas = FigureCanvasTkAgg(figura, master=janela)
+
+canvas.get_tk_widget().pack(pady=10)
+figura.patch.set_facecolor("#1e293b")
+
+gráfico.set_facecolor("#1e293b")
+
+gráfico.tick_params(colors="white")
+
+gráfico.spines["bottom"].set_color("white")
+gráfico.spines["top"].set_color("white")
+gráfico.spines["left"].set_color("white")
+gráfico.spines["right"].set_color("white")
+
+gráfico.title.set_color("white")
+
+gráfico.yaxis.label.set_color("white")
+
+
+
+# INICIA SISTEMA
+
+
 atualizar_dados()
 
-# Mantém a interface aberta
+
+
+# MANTÉM JANELA ABERTA
+# 
+
 janela.mainloop()

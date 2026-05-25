@@ -32,3 +32,330 @@
 ⚠ Ataque DDoS Detectado
 ⚠ Ataque de Força Bruta Detectado
 ⚠ Actividade Suspeita na Rede
+[19:01:13] ⚠ Ataque DDoS Detectado
+[19:01:16] ⚠ Port Scan Detectado
+[19:01:19] ⚠ Ataque DDoS Detectado
+[19:01:22] ⚠ Port Scan Detectado
+[19:01:25] ⚠ Ataque DDoS Detectado
+[19:01:28] ✔ Actividade Normal
+[19:01:32] ✔ Actividade Normal
+[19:01:35] ⚠ Port Scan Detectado
+[19:01:38] ✔ Actividade Normal
+[19:01:41] ✔ Actividade Normal
+[19:01:44] ✔ Actividade Normal
+[19:01:47] ⚠ Ataque DDoS Detectado
+[19:01:50] ✔ Actividade Normal
+[19:01:53] ⚠ Port Scan Detectado
+[19:01:56] ✔ Actividade Normal
+[19:01:59] ⚠ Ataque DDoS Detectado
+[19:02:02] ✔ Actividade Normal
+[19:02:05] ⚠ Ataque DDoS Detectado
+[19:02:08] ✔ Actividade Normal
+[19:02:11] ⚠ Ataque DDoS Detectado
+[19:02:15] ✔ Actividade Normal
+[19:02:18] ✔ Actividade Normal
+[19:02:21] ✔ Actividade Normal
+[19:02:24] ✔ Actividade Normal
+[19:02:27] ⚠ Port Scan Detectado
+[19:02:30] ✔ Actividade Normal
+[19:02:33] ⚠ Ataque DDoS Detectado
+[19:02:37] ⚠ Port Scan Detectado
+[19:02:40] ✔ Actividade Normal
+[19:02:43] ⚠ Ataque DDoS Detectado
+[19:02:46] ✔ Actividade Normal
+[19:02:49] ✔ Actividade Normal
+[19:02:52] ⚠ Port Scan Detectado
+[19:02:55] ⚠ Port Scan Detectado
+[19:02:59] ✔ Actividade Normal
+[19:03:02] ⚠ Port Scan Detectado
+[19:03:05] ⚠ Ataque DDoS Detectado
+[19:03:08] ⚠ Port Scan Detectado
+[19:03:11] ⚠ Ataque DDoS Detectado
+[19:03:14] ⚠ Ataque DDoS Detectado
+[19:03:18] ✔ Actividade Normal
+[19:03:21] ⚠ Ataque DDoS Detectado
+[19:03:24] ⚠ Port Scan Detectado
+[19:03:27] ⚠ Ataque DDoS Detectado
+[19:03:30] ✔ Actividade Normal
+[19:03:33] ⚠ Ataque Detectado: FTP-Patator
+[19:03:36] ⚠ Ataque DDoS Detectado
+[19:03:39] ⚠ Ataque DDoS Detectado
+[19:03:43] ✔ Actividade Normal
+[19:03:46] ✔ Actividade Normal
+[19:03:49] ✔ Actividade Normal
+[19:03:52] ✔ Actividade Normal
+[19:03:55] ⚠ Ataque DDoS Detectado
+[19:03:59] ✔ Actividade Normal
+[19:04:02] ✔ Actividade Normal
+[19:04:05] ✔ Actividade Normal
+[19:04:08] ✔ Actividade Normal
+[19:04:11] ⚠ Ataque DDoS Detectado
+[19:04:14] ⚠ Ataque DDoS Detectado
+[19:04:17] ⚠ Ataque DDoS Detectado
+[19:04:21] ⚠ Ataque DDoS Detectado
+[19:04:24] ⚠ Ataque DDoS Detectado
+[19:04:27] ⚠ Ataque DDoS Detectado
+[19:04:30] ⚠ Ataque DDoS Detectado
+[19:04:33] ⚠ Ataque DDoS Detectado
+[19:04:36] ✔ Actividade Normal
+[19:04:39] ✔ Actividade Normal
+[19:04:43] ⚠ Ataque DDoS Detectado
+[19:04:46] ⚠ Ataque DDoS Detectado
+[19:04:49] ✔ Actividade Normal
+[19:04:52] ✔ Actividade Normal
+[19:04:55] ⚠ Port Scan Detectado
+[19:04:58] ⚠ Ataque DDoS Detectado
+[19:05:02] ✔ Actividade Normal
+[19:05:05] ✔ Actividade Normal
+[19:05:08] ✔ Actividade Normal
+[19:05:11] ✔ Actividade Normal
+[19:05:14] ⚠ Ataque DDoS Detectado
+[19:05:17] ⚠ Ataque DDoS Detectado
+[19:05:20] ✔ Actividade Normal
+[19:05:24] ✔ Actividade Normal
+[19:05:27] ✔ Actividade Normal
+[19:05:30] ✔ Actividade Normal
+[19:05:33] ✔ Actividade Normal
+[19:05:36] ⚠ Port Scan Detectado
+[19:05:39] ⚠ Port Scan Detectado
+[19:05:42] ⚠ Port Scan Detectado
+[19:05:46] ⚠ Ataque DDoS Detectado
+[19:05:49] ⚠ Ataque DDoS Detectado
+[19:05:52] ⚠ Ataque DDoS Detectado
+[19:05:55] ✔ Actividade Normal
+[19:05:58] ✔ Actividade Normal
+[19:06:01] ✔ Actividade Normal
+[19:06:05] ⚠ Ataque DDoS Detectado
+[19:06:08] ✔ Actividade Normal
+[19:06:11] ⚠ Ataque DDoS Detectado
+[19:06:14] ⚠ Port Scan Detectado
+[19:06:17] ⚠ Botnet Detectada
+[19:06:20] ⚠ Ataque DDoS Detectado
+[19:06:23] ✔ Actividade Normal
+[19:06:27] ⚠ Ataque DDoS Detectado
+[19:06:30] ⚠ Ataque DDoS Detectado
+[19:06:33] ✔ Actividade Normal
+[19:06:36] ⚠ Ataque DDoS Detectado
+[19:06:39] ✔ Actividade Normal
+[19:06:42] ✔ Actividade Normal
+[19:06:46] ✔ Actividade Normal
+[19:06:49] ✔ Actividade Normal
+[19:06:52] ⚠ Ataque DDoS Detectado
+[19:06:55] ⚠ Ataque DDoS Detectado
+[19:06:58] ⚠ Ataque DDoS Detectado
+[19:07:01] ✔ Actividade Normal
+[19:07:05] ⚠ Ataque DDoS Detectado
+[19:07:08] ⚠ Ataque DDoS Detectado
+[19:07:11] ⚠ Ataque DDoS Detectado
+[19:07:14] ✔ Actividade Normal
+[19:07:17] ✔ Actividade Normal
+[19:07:20] ⚠ Ataque DDoS Detectado
+[19:07:23] ⚠ Ataque DDoS Detectado
+[19:07:27] ✔ Actividade Normal
+[19:07:30] ✔ Actividade Normal
+[19:07:33] ✔ Actividade Normal
+[19:07:36] ⚠ Ataque DDoS Detectado
+[19:07:39] ⚠ Ataque DDoS Detectado
+[19:07:42] ✔ Actividade Normal
+[19:07:46] ⚠ Ataque DDoS Detectado
+[19:07:49] ✔ Actividade Normal
+[19:07:52] ✔ Actividade Normal
+[19:07:55] ⚠ Port Scan Detectado
+[19:07:58] ⚠ Port Scan Detectado
+[19:08:02] ✔ Actividade Normal
+[19:08:05] ⚠ Port Scan Detectado
+[19:08:08] ⚠ Ataque DDoS Detectado
+[19:08:11] ⚠ Ataque DDoS Detectado
+[19:08:14] ✔ Actividade Normal
+[19:08:17] ✔ Actividade Normal
+[19:08:21] ⚠ Port Scan Detectado
+[19:08:24] ✔ Actividade Normal
+[19:08:27] ⚠ Port Scan Detectado
+[19:08:30] ⚠ Ataque DDoS Detectado
+[19:08:33] ⚠ Ataque DDoS Detectado
+[19:08:37] ⚠ Botnet Detectada
+[19:08:40] ✔ Actividade Normal
+[19:08:43] ⚠ Ataque DDoS Detectado
+[19:08:46] ✔ Actividade Normal
+[19:08:49] ⚠ Ataque DDoS Detectado
+[19:08:53] ⚠ Ataque DDoS Detectado
+[19:08:56] ✔ Actividade Normal
+[19:08:59] ⚠ Port Scan Detectado
+[19:09:02] ✔ Actividade Normal
+[19:09:05] ⚠ Ataque DDoS Detectado
+[19:09:08] ✔ Actividade Normal
+[19:09:12] ✔ Actividade Normal
+[19:09:15] ⚠ Ataque Detectado: SSH-Patator
+[19:09:18] ⚠ Ataque Detectado: FTP-Patator
+[19:09:21] ⚠ Ataque DDoS Detectado
+[19:09:24] ✔ Actividade Normal
+[19:09:28] ⚠ Ataque DDoS Detectado
+[19:09:31] ✔ Actividade Normal
+[19:09:34] ✔ Actividade Normal
+[19:09:37] ✔ Actividade Normal
+[19:09:40] ⚠ Ataque DDoS Detectado
+[19:09:43] ✔ Actividade Normal
+[19:09:47] ⚠ Ataque Detectado: FTP-Patator
+[19:09:50] ⚠ Ataque DDoS Detectado
+[19:09:53] ⚠ Ataque Detectado: FTP-Patator
+[19:09:56] ⚠ Ataque DDoS Detectado
+[19:09:59] ✔ Actividade Normal
+[19:10:03] ✔ Actividade Normal
+[19:10:06] ✔ Actividade Normal
+[19:10:09] ⚠ Ataque DDoS Detectado
+[19:10:12] ⚠ Ataque DDoS Detectado
+[19:10:15] ⚠ Ataque DDoS Detectado
+[19:10:18] ⚠ Ataque DDoS Detectado
+[19:10:21] ⚠ Ataque Detectado: FTP-Patator
+[19:10:25] ⚠ Port Scan Detectado
+[19:10:28] ⚠ Ataque DDoS Detectado
+[19:10:31] ⚠ Port Scan Detectado
+[19:10:34] ⚠ Ataque DDoS Detectado
+[19:10:37] ⚠ Ataque DDoS Detectado
+[19:10:41] ⚠ Ataque DDoS Detectado
+[19:10:44] ✔ Actividade Normal
+[19:10:47] ✔ Actividade Normal
+[19:10:50] ⚠ Port Scan Detectado
+[19:10:54] ⚠ Ataque DDoS Detectado
+[19:10:57] ⚠ Ataque DDoS Detectado
+[19:11:00] ⚠ Port Scan Detectado
+[19:11:03] ✔ Actividade Normal
+[19:11:06] ⚠ Ataque DDoS Detectado
+[19:11:09] ✔ Actividade Normal
+[19:11:13] ✔ Actividade Normal
+[19:11:16] ⚠ Ataque DDoS Detectado
+[19:11:19] ✔ Actividade Normal
+[19:11:22] ⚠ Ataque DDoS Detectado
+[19:11:25] ⚠ Port Scan Detectado
+[19:11:28] ✔ Actividade Normal
+[19:11:32] ✔ Actividade Normal
+[19:11:35] ⚠ Ataque DDoS Detectado
+[19:11:38] ✔ Actividade Normal
+[19:11:41] ✔ Actividade Normal
+[19:11:44] ⚠ Port Scan Detectado
+[19:11:48] ✔ Actividade Normal
+[19:11:51] ✔ Actividade Normal
+[19:11:54] ✔ Actividade Normal
+[19:11:57] ✔ Actividade Normal
+[19:12:00] ✔ Actividade Normal
+[19:12:03] ✔ Actividade Normal
+[19:12:07] ⚠ Ataque DDoS Detectado
+[19:12:10] ⚠ Ataque DDoS Detectado
+[19:12:13] ⚠ Ataque DDoS Detectado
+[19:12:16] ⚠ Ataque DDoS Detectado
+[19:12:19] ⚠ Ataque DDoS Detectado
+[19:12:22] ⚠ Botnet Detectada
+[19:12:25] ✔ Actividade Normal
+[19:12:29] ⚠ Ataque DDoS Detectado
+[19:12:32] ✔ Actividade Normal
+[19:12:35] ✔ Actividade Normal
+[19:12:38] ⚠ Ataque DDoS Detectado
+[19:12:41] ⚠ Port Scan Detectado
+[19:12:44] ⚠ Ataque Detectado: SSH-Patator
+[19:12:47] ✔ Actividade Normal
+[19:12:51] ⚠ Ataque DDoS Detectado
+[19:12:54] ⚠ Ataque Detectado: FTP-Patator
+[19:12:57] ⚠ Ataque DDoS Detectado
+[19:13:00] ⚠ Port Scan Detectado
+[19:13:03] ⚠ Ataque DDoS Detectado
+[19:13:06] ✔ Actividade Normal
+[19:13:09] ⚠ Port Scan Detectado
+[19:13:13] ⚠ Ataque DDoS Detectado
+[19:13:16] ⚠ Port Scan Detectado
+[19:13:19] ✔ Actividade Normal
+[19:13:22] ✔ Actividade Normal
+[19:13:25] ✔ Actividade Normal
+[19:13:28] ⚠ Ataque DDoS Detectado
+[19:13:31] ⚠ Port Scan Detectado
+[19:13:35] ✔ Actividade Normal
+[19:13:38] ⚠ Ataque DDoS Detectado
+[19:13:41] ✔ Actividade Normal
+[19:13:44] ⚠ Port Scan Detectado
+[19:13:47] ⚠ Ataque DDoS Detectado
+[19:13:51] ✔ Actividade Normal
+[19:13:54] ⚠ Ataque DDoS Detectado
+[19:13:57] ⚠ Ataque DDoS Detectado
+[19:14:00] ⚠ Port Scan Detectado
+[19:14:03] ⚠ Ataque Detectado: FTP-Patator
+[19:14:06] ⚠ Ataque DDoS Detectado
+[19:14:09] ✔ Actividade Normal
+[19:14:13] ✔ Actividade Normal
+[19:14:16] ✔ Actividade Normal
+[19:14:19] ⚠ Port Scan Detectado
+[19:14:22] ✔ Actividade Normal
+[19:14:25] ✔ Actividade Normal
+[19:14:28] ⚠ Ataque DDoS Detectado
+[19:14:31] ⚠ Ataque DDoS Detectado
+[19:14:35] ✔ Actividade Normal
+[19:14:38] ✔ Actividade Normal
+[19:14:41] ✔ Actividade Normal
+[19:14:44] ⚠ Port Scan Detectado
+[19:14:47] ⚠ Ataque DDoS Detectado
+[19:14:50] ⚠ Port Scan Detectado
+[19:14:54] ⚠ Ataque DDoS Detectado
+[19:14:57] ✔ Actividade Normal
+[19:15:00] ⚠ Ataque DDoS Detectado
+[19:15:03] ⚠ Ataque DDoS Detectado
+[19:15:06] ⚠ Port Scan Detectado
+[19:15:09] ⚠ Ataque DDoS Detectado
+[19:15:13] ✔ Actividade Normal
+[19:15:16] ✔ Actividade Normal
+[19:15:19] ⚠ Port Scan Detectado
+[19:15:22] ⚠ Ataque DDoS Detectado
+[19:15:25] ⚠ Ataque DDoS Detectado
+[19:15:28] ⚠ Ataque DDoS Detectado
+[19:15:32] ⚠ Ataque DDoS Detectado
+[19:15:35] ⚠ Port Scan Detectado
+[19:15:38] ⚠ Ataque Detectado: FTP-Patator
+[19:15:41] ⚠ Ataque DDoS Detectado
+[19:15:44] ⚠ Ataque DDoS Detectado
+[19:15:47] ✔ Actividade Normal
+[19:15:51] ✔ Actividade Normal
+[19:15:54] ⚠ Port Scan Detectado
+[19:15:57] ✔ Actividade Normal
+[19:16:00] ⚠ Ataque DDoS Detectado
+[19:16:03] ✔ Actividade Normal
+[19:16:06] ✔ Actividade Normal
+[19:16:09] ✔ Actividade Normal
+[19:16:13] ⚠ Ataque DDoS Detectado
+[19:16:16] ⚠ Ataque DDoS Detectado
+[19:16:19] ⚠ Port Scan Detectado
+[19:16:22] ⚠ Ataque DDoS Detectado
+[19:16:25] ✔ Actividade Normal
+[19:16:28] ⚠ Ataque DDoS Detectado
+[19:16:32] ⚠ Port Scan Detectado
+[19:16:35] ⚠ Port Scan Detectado
+[19:16:38] ⚠ Ataque DDoS Detectado
+[19:16:41] ✔ Actividade Normal
+[19:16:44] ⚠ Port Scan Detectado
+[19:16:47] ✔ Actividade Normal
+[19:16:51] ✔ Actividade Normal
+[19:16:54] ⚠ Port Scan Detectado
+[19:16:57] ⚠ Ataque DDoS Detectado
+[19:17:00] ⚠ Ataque DDoS Detectado
+[19:17:03] ✔ Actividade Normal
+[19:17:06] ✔ Actividade Normal
+[19:17:10] ⚠ Ataque Detectado: FTP-Patator
+[19:17:13] ✔ Actividade Normal
+[19:17:16] ⚠ Ataque DDoS Detectado
+[19:21:50] ⚠ Port Scan Detectado
+[19:21:53] ✔ Actividade Normal
+[19:21:56] ✔ Actividade Normal
+[19:22:00] ⚠ Ataque DDoS Detectado
+[19:22:03] ⚠ Ataque DDoS Detectado
+[19:22:06] ⚠ Ataque DDoS Detectado
+[19:22:09] ⚠ Ataque DDoS Detectado
+[19:22:12] ✔ Actividade Normal
+[19:22:15] ⚠ Ataque DDoS Detectado
+[19:22:18] ⚠ Ataque DDoS Detectado
+[19:22:21] ✔ Actividade Normal
+[19:22:24] ✔ Actividade Normal
+[19:22:27] ⚠ Port Scan Detectado
+[19:22:30] ⚠ Ataque DDoS Detectado
+[19:22:33] ⚠ Ataque DDoS Detectado
+[19:22:36] ⚠ Ataque DDoS Detectado
+[19:22:39] ⚠ Ataque DDoS Detectado
+[19:22:43] ✔ Actividade Normal
+[19:22:46] ⚠ Ataque DDoS Detectado
+[19:22:49] ⚠ Port Scan Detectado
+[19:22:52] ✔ Actividade Normal
