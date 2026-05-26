@@ -15,6 +15,8 @@ from colector_rede import obter_dados_rede
 
 #25/05/2026: Mudancas feitas para integrar IA a interface
 from detector_ia import prever_ataque
+#26/05/2026
+from regras_detenccao import detectar_por_regras
 
 
 # LISTAS DO GRÁFICO
@@ -35,23 +37,34 @@ def atualizar_dados():
 
     # Detecta ataque
     #resultado = detectar_ataque(dados)
-    resultado= prever_ataque(dados)
+    resultado= detectar_por_regras(dados)
 
     #Mensagens
+    mensagem = "Actividade Suspeita"
+
+    if resultado is None:
+        resultado= prever_ataque(dados)
+    
     if resultado == "BENIGN":
         mensagem = "Actividade Normal"
-    
+
     elif "DoS" in resultado or "DDoS" in resultado:
-        mensagem = "Ataque DDoS Detectado"
+        mensagem = "🚨 Ataque DDoS Detectado"
+
+    elif "Força Bruta" in resultado or "Patator" in resultado:
+        mensagem = "🚨 Ataque de Força Bruta Detectado"
+
+    elif "Phishing" in resultado:
+        mensagem = "🚨 Possível Ataque de Phishing"
+
+    elif "Ransomware" in resultado:
+        mensagem = "🚨 Possível Actividade de Ransomware"
 
     elif "PortScan" in resultado:
-        mensagem = "Port Scan Detectado"
-
-    elif "Patator" in resultado:
-        mensagem = "Ataque de Força Bruta Detectado"
+        mensagem = "⚠️ Port Scan Detectado"
 
     else:
-        mensagem = f"Ataque Detectado: {resultado}"
+        mensagem = f"🚨 Ataque Detectado: {resultado}"
 
     
     # CORES DOS ALERTAS
@@ -71,6 +84,9 @@ def atualizar_dados():
     resultado_label.config(
     text=f"Resultado: {mensagem}",
     fg=cor_alerta
+)
+    requisições_label.config(
+    text=f"Requisições: {dados['requisições']}"
 )
 
     duração_label.config(
