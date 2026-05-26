@@ -12,7 +12,11 @@ encoder= joblib.load("encoder.pkl")
 def prever_ataque(dados):
 
     # Criar tabela com os dados recebidos
-    entrada = pd.DataFrame([dados])
+    entrada = pd.DataFrame([{
+    "Total Fwd Packets": dados["requisições"],
+    "Flow Duration": dados["duração"],
+    "Total Backward Packets": dados["pacotes_retorno"]
+    }])
 
     # Fazer previsão
     previsao = modelo.predict(entrada)
@@ -20,12 +24,16 @@ def prever_ataque(dados):
 
     return ataque[0]
 
-dados_teste= {
-    "Total Fwd Packets": 2,
-    "Flow Duration": 3,
-    "Total Backward Packets": 0
-}
+if __name__ == "__main__":
+    dados_teste= {
+     "requisições": 2,
+    "duração": 3,
+    "pacotes_retorno": 0
+    }
+    
+    resultado= prever_ataque(dados_teste)
 
-resultado= prever_ataque(dados_teste)
+    
 
-print("Resultado previsto: ", resultado)
+    print("Resultado previsto: ", resultado)
+

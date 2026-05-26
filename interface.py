@@ -11,8 +11,10 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
 
 # Importa módulos do projecto
-from colector import gerar_dados
-from detector import detectar_ataque
+from captura_rede import obter_dados_rede
+
+#25/05/2026: Mudancas feitas para integrar IA a interface
+from detector_ia import prever_ataque
 
 
 # LISTAS DO GRÁFICO
@@ -29,33 +31,30 @@ y_dados = []
 def atualizar_dados():
 
     # Gera dados reais
-    dados = gerar_dados()
+    dados = obter_dados_rede()
 
     # Detecta ataque
-    resultado = detectar_ataque(dados)
+    #resultado = detectar_ataque(dados)
+    resultado= prever_ataque(dados)
 
-    # ACTUALIZA LABELS
+    #Mensagens
+    if resultado == "BENIGN":
+        mensagem = "Actividade Normal"
     
+    elif "DoS" in resultado or "DDoS" in resultado:
+        mensagem = "Ataque DDoS Detectado"
 
-    requisições_label.config(
-        text=f"Pacotes Enviados: {dados['requisições']}"
-    )
+    elif "PortScan" in resultado:
+        mensagem = "Port Scan Detectado"
 
-    duração_label.config(
-        text=f"Duração do Fluxo: {dados['duração']}"
-    )
+    elif "Patator" in resultado:
+        mensagem = "Ataque de Força Bruta Detectado"
 
-    retorno_label.config(
-        text=f"Pacotes de Retorno: {dados['pacotes_retorno']}"
-    )
+    else:
+        mensagem = f"Ataque Detectado: {resultado}"
 
-    tipo_label.config(
-        text=f"Tipo Detectado: {dados['label']}"
-    )
-
+    
     # CORES DOS ALERTAS
-
-
     cor_alerta = "lime"
 
     if "DDoS" in resultado:
@@ -68,12 +67,22 @@ def atualizar_dados():
         cor_alerta = "purple"
 
 
-    # RESULTADO
-   
-
+    # ACTUALIZA LABELS
     resultado_label.config(
-        text=f"Resultado: {resultado}",
-        fg=cor_alerta
+    text=f"Resultado: {mensagem}",
+    fg=cor_alerta
+)
+
+    duração_label.config(
+        text=f"Duração do Fluxo: {dados['duração']}"
+    )
+
+    retorno_label.config(
+        text=f"Pacotes de Retorno: {dados['pacotes_retorno']}"
+    )
+
+    tipo_label.config(
+       text=f"Tipo Detectado: {resultado}"
     )
 
   
