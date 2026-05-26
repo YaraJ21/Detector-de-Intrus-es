@@ -11,7 +11,7 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
 
 # Importa módulos do projecto
-from captura_rede import obter_dados_rede
+from colector_rede import obter_dados_rede
 
 #25/05/2026: Mudancas feitas para integrar IA a interface
 from detector_ia import prever_ataque
