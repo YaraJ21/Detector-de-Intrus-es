@@ -1,5 +1,7 @@
 #Data: 24/05/2026
 
+#Data: 11/06/2026 :Novos features sao adicionados ao modelo 
+
 #Modelo de Ineligencia Artificial 
 
 import pandas as pd
@@ -10,23 +12,27 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score
+from sklearn.metrics import classification_report
+
+from features_modelo import FEATURES  #Importa os features que o modelo ira aprender 
+
 
 #Carregamento do DataSet
 
-dataset= pd.read_csv("C:/Users/ACER/OneDrive/Desktop/isdb/2026/1_Semestre/Seguranca de Sistemas/Detector-de-Intrus-es/dataset_completo.csv")
+dataset= pd.read_csv("dataset_completo.csv")
 dataset.columns= dataset.columns.str.strip()
 
-X= dataset[[
-    "Total Fwd Packets",
-    "Flow Duration",
-    "Total Backward Packets"
-]]
+
+
+
+#============Selecao de Features==================================================================================================================#
+X= dataset[FEATURES]
  
 y= dataset["Label"]
 
 # LIMPEZA DOS DADOS
 
-x= X.replace([np.inf, -np.inf], np.nan)
+X= X.replace([np.inf, -np.inf], np.nan) #Substitui valores infinitos por NaN
 
 valid_rows = X.notna().all(axis=1)
 
@@ -52,7 +58,10 @@ X_treino, X_teste, y_treino, y_teste = train_test_split(
 
 print("A treinar modelo...")
 
-modelo = RandomForestClassifier(n_estimators=10)
+modelo = RandomForestClassifier(
+    n_estimators=100,
+    random_state=42 
+    )
 
 modelo.fit(X_treino, y_treino)
 
@@ -65,6 +74,9 @@ previsoes = modelo.predict(X_teste)
 precisao = accuracy_score(y_teste, previsoes)
 
 print("Precisão:", precisao)
+
+print("\n=== RELATÓRIO COMPLETO ===")
+print(classification_report(y_teste, previsoes))
 
 #Guardar modelo treinado
 joblib.dump(modelo, "modelo_treinado.pkl")
