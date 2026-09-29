@@ -4,10 +4,11 @@
 # Detector Inteligente com IA
 import joblib
 import pandas as pd
+import json
 
 from features_modelo import FEATURES
 from colector_rede import obter_dados_rede
-from device_tracker import update_prediction
+from device_tracker import update_prediction, get_devices
 
 # Carregar modelo treinado
 modelo = joblib.load("modelo_treinado.pkl")
@@ -46,6 +47,24 @@ def prever_multiplos_ataques(dados_multiplos_ips):
 
     return resultados
 
+def guardar_estado():
+    estado = {}
+
+    for ip, dados in get_devices().items():
+        estado[ip] = {
+            "name": dados["name"],
+            "status": dados["status"],
+            "prediction": dados["prediction"],
+            "packets": dados["packets"],
+            "activity_score": dados["activity_score"],
+            "last_seen": (
+                dados["last_seen"].strftime("%H:%M:%S")
+                if dados["last_seen"] else None
+            )
+        }
+
+    with open("state.json", "w", encoding="utf-8") as ficheiro:
+        json.dump(estado, ficheiro, indent=4, ensure_ascii=False)
 
     
 
@@ -61,6 +80,7 @@ if __name__ == "__main__":
         dados = obter_dados_rede()
 
         resultados = prever_multiplos_ataques(dados)
+        guardar_estado()
 
         for ip, result in resultados.items():
             print(f"\nIP: {ip}")
