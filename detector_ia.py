@@ -7,6 +7,7 @@ import pandas as pd
 
 from features_modelo import FEATURES
 from colector_rede import obter_dados_rede
+from device_tracker import update_prediction
 
 # Carregar modelo treinado
 modelo = joblib.load("modelo_treinado.pkl")
@@ -33,11 +34,16 @@ def prever_ataque(dados):
     return ataque[0]
 
 def prever_multiplos_ataques(dados_multiplos_ips):
-
     resultados = {}
 
     for ip, features in dados_multiplos_ips.items():
-        resultados[ip] = prever_ataque(features)
+        resultado = prever_ataque(features)
+
+        resultados[ip] = resultado
+
+        # Guarda a previsão no tracker do dispositivo
+        update_prediction(ip, resultado)
+
     return resultados
 
 
@@ -49,13 +55,13 @@ def prever_multiplos_ataques(dados_multiplos_ips):
 
 if __name__ == "__main__":
 
-    # Exemplo de entrada simulada (MVP test)
-    print("Capturando tráfego por IP...")
+   while True:
+        print("\nCapturando tráfego por IP...")
 
-    dados = obter_dados_rede()
+        dados = obter_dados_rede()
 
-    resultados = prever_multiplos_ataques(dados)
+        resultados = prever_multiplos_ataques(dados)
 
-    for ip, result in resultados.items():
-        print(f"\nIP: {ip}")
-        print("Resultado:", result)
+        for ip, result in resultados.items():
+            print(f"\nIP: {ip}")
+            print("Resultado:", result)

@@ -1,0 +1,59 @@
+services:
+
+  node01:
+    image: python:3.13-slim
+    container_name: cybershield-node01
+    hostname: node01
+    networks:
+      cybershield_net:
+        ipv4_address: 10.10.0.10
+    command: ["python", "-m", "http.server", "8000"]
+    ports:
+      - "8010:8000"
+
+  node02:
+    image: python:3.13-slim
+    container_name: cybershield-node02
+    hostname: node02
+    networks:
+      cybershield_net:
+        ipv4_address: 10.10.0.11
+    command: ["python", "-m", "http.server", "8000"]
+    ports:
+      - "8011:8000"
+
+  node03:
+    image: python:3.13-slim
+    container_name: cybershield-node03
+    hostname: node03
+    networks:
+      cybershield_net:
+        ipv4_address: 10.10.0.12
+    command: ["python", "-m", "http.server", "8000"]
+    ports:
+      - "8012:8000"
+  
+  sensor:
+    build:
+      context: .
+      dockerfile: Dockerfile.sensor
+    container_name: cybershield-sensor
+    hostname: cybershield-sensor
+    volumes:
+      - .:/app
+    working_dir: /app
+    networks:
+      cybershield_net:
+        ipv4_address: 10.10.0.20
+    command: ["python", "-u", "detector_ia.py"]
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+
+networks:
+  cybershield_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.10.0.0/24
+

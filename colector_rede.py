@@ -136,7 +136,7 @@ def obter_dados_rede():
     # Captura pacotes durante 5 segundos
     sniff(
         prn=analisar_pacote,
-        timeout=3,
+        timeout=10,
         store=False,
         iface= INTERFACE
     )
