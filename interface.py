@@ -1,340 +1,952 @@
-# SISTEMA DE DETECÇÃO DE INTRUSÕES
-# INTERFACE GRÁFICA
-# Biblioteca gráfica
 import tkinter as tk
-
-# Data e hora
+from tkinter import ttk
 from datetime import datetime
 
-# Gráficos
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from matplotlib.figure import Figure
+# ============================================================
 
-# Importa módulos do projecto
-from colector_rede import obter_dados_rede
+# CONFIGURAÇÃO DOS NÓS SIMULADOS
 
-#25/05/2026: Mudancas feitas para integrar IA a interface
-from detector_ia import prever_ataque
-#26/05/2026
-from regras_detenccao import detectar_por_regras
+# ============================================================
+
+nos = {
+"NODE 01": {
+"ip": "192.168.1.10",
+"estado": "ACTIVO"
+},
+"NODE 02": {
+"ip": "192.168.1.11",
+"estado": "ACTIVO"
+},
+"NODE 03": {
+"ip": "192.168.1.12",
+"estado": "ACTIVO"
+}
+}
+
+# ============================================================
+
+# VARIÁVEIS DO SISTEMA
+
+# ============================================================
+
+monitorizacao_ativa = False
+total_alertas = 0
+total_pacotes = 0
+
+# ============================================================
+
+# CORES
+
+# ============================================================
+
+BG_PRINCIPAL = "#0f172a"
+BG_CARD = "#1e293b"
+BG_CARD_2 = "#172033"
+
+CYAN = "#00ffff"
+BRANCO = "#ffffff"
+VERDE = "#00ff66"
+VERMELHO = "#ff3333"
+LARANJA = "#ff9800"
+AMARELO = "#ffff00"
+CINZENTO = "#94a3b8"
+
+# ============================================================
+
+# ACTUALIZAR NÓS
+
+# ============================================================
+
+def actualizar_nos():
 
 
-# LISTAS DO GRÁFICO
+    for widget in frame_nos.winfo_children():
+        widget.destroy()
+
+    for nome, dados in nos.items():
+
+        estado = dados["estado"]
+
+        if estado == "ACTIVO":
+            simbolo = "🟢"
+            cor = VERDE
+
+        elif estado == "SOB ATAQUE":
+            simbolo = "🟠"
+            cor = LARANJA
+
+        else:
+            simbolo = "🔴"
+            cor = VERMELHO
+
+        card = tk.Frame(
+            frame_nos,
+            bg=BG_CARD_2,
+            bd=2,
+            relief="ridge"
+        )
+
+        card.pack(
+            side="left",
+            fill="both",
+            expand=True,
+            padx=6,
+            pady=5
+        )
+
+        tk.Label(
+            card,
+            text=nome,
+            font=("Arial", 13, "bold"),
+            bg=BG_CARD_2,
+            fg=CYAN
+        ).pack(pady=(10, 5))
+
+        tk.Label(
+            card,
+            text=dados["ip"],
+            font=("Consolas", 10),
+            bg=BG_CARD_2,
+            fg=BRANCO
+        ).pack()
+
+        tk.Label(
+            card,
+            text=f"{simbolo} {estado}",
+            font=("Arial", 11, "bold"),
+            bg=BG_CARD_2,
+            fg=cor
+        ).pack(pady=10)
 
 
-x_dados = []
-y_dados = []
+# ============================================================
+
+# ACTUALIZAR ESTADO DO NÓ
+
+# ============================================================
+
+def actualizar_estado_no(nome_no, estado):
 
 
+    if nome_no in nos:
+        nos[nome_no]["estado"] = estado
 
-# FUNÇÃO PRINCIPAL
+    actualizar_nos()
+    actualizar_contador_nos()
 
 
-def atualizar_dados():
+# ============================================================
 
-    # Gera dados reais
-    dados = obter_dados_rede()
+# ACTUALIZAR CONTADOR DE NÓS
 
-    # Detecta ataque
-    #resultado = detectar_ataque(dados)
-    resultado= detectar_por_regras(dados)
+# ============================================================
 
-    #Mensagens
-    mensagem = "Actividade Suspeita"
+def actualizar_contador_nos():
 
-    if resultado is None:
-        resultado= prever_ataque(dados)
-    
-    if resultado == "BENIGN":
-        mensagem = "Actividade Normal"
+    nos_ativos = 0
 
-    elif "DoS" in resultado or "DDoS" in resultado:
-        mensagem = "🚨 Ataque DDoS Detectado"
+    for dados in nos.values():
 
-    elif "Força Bruta" in resultado or "Patator" in resultado:
-        mensagem = "🚨 Ataque de Força Bruta Detectado"
+        if dados["estado"] == "ACTIVO":
+            nos_ativos += 1
 
-    elif "Phishing" in resultado:
-        mensagem = "🚨 Possível Ataque de Phishing"
+    nos_label.config(
+        text=f"NÓS ACTIVOS: {nos_ativos}"
+    )
 
-    elif "Ransomware" in resultado:
-        mensagem = "🚨 Possível Actividade de Ransomware"
 
-    elif "PortScan" in resultado:
-        mensagem = "⚠️ Port Scan Detectado"
+# ============================================================
+
+# MOSTRAR ALERTA
+
+# ============================================================
+
+def mostrar_alerta(resultado):
+    tipo = resultado["tipo_ataque"]
+    origem = resultado["ip_origem"]
+    destino = resultado["ip_destino"]
+    no_afectado = resultado["no_afectado"]
+    confianca = resultado["confianca"]
+
+    if resultado["classificacao"] == "MALICIOSO":
+
+        alerta_titulo.config(
+            text="⚠ ATAQUE DETECTADO",
+            fg=VERMELHO
+        )
+
+    alerta_tipo.config(
+        text=f"Tipo: {tipo}"
+    )
+
+    alerta_origem.config(
+        text=f"Origem: {origem}"
+    )
+
+    alerta_destino.config(
+        text=f"Destino: {destino}"
+    )
+
+    alerta_no.config(
+        text=f"Nó afectado: {no_afectado}"
+    )
+
+    alerta_classificacao.config(
+        text="Classificação: MALICIOSO",
+        fg=VERMELHO
+    )
+
+    alerta_confianca.config(
+        text=f"Confiança: {confianca * 100:.0f}%"
+    )
+
+    actualizar_estado_no(
+        no_afectado,
+        "SOB ATAQUE"
+    )
+
+
+    # ============================================================
+
+    # INICIAR MONITORIZAÇÃO
+
+    # ============================================================
+
+def iniciar_monitorizacao():
+
+
+    global monitorizacao_ativa
+
+    monitorizacao_ativa = True
+
+    status_sistema.config(
+        text="🟢 SISTEMA ONLINE",
+        fg=VERDE
+    )
+
+    status_operacao.config(
+        text="🟢 MONITORIZAÇÃO ACTIVA",
+        fg=VERDE
+    )
+
+
+# ============================================================
+
+# PARAR MONITORIZAÇÃO
+
+# ============================================================
+
+def parar_monitorizacao():
+
+
+    global monitorizacao_ativa
+
+    monitorizacao_ativa = False
+
+    status_operacao.config(
+        text="🔴 MONITORIZAÇÃO PARADA",
+        fg=VERMELHO
+    )
+
+
+    # ============================================================
+
+    # LIMPAR ALERTAS
+
+    # ============================================================
+
+def limpar_resultados():
+
+
+    global total_alertas
+    global total_pacotes
+
+
+    total_alertas = 0
+    total_pacotes = 0
+
+    for nome in nos:
+        nos[nome]["estado"] = "ACTIVO"
+
+    alertas_label.config(
+        text="AMEAÇAS: 0"
+    )
+
+    pacotes_label.config(
+        text="PACOTES: 0"
+    )
+
+    nos_label.config(
+        text="NÓS ACTIVOS: 3"
+    )
+
+    alerta_titulo.config(
+        text="AGUARDANDO DETECÇÃO",
+        fg=CYAN
+    )
+
+    alerta_tipo.config(
+        text="Tipo: -"
+    )
+
+    alerta_origem.config(
+        text="Origem: -"
+    )
+
+    alerta_destino.config(
+        text="Destino: -"
+    )
+
+    alerta_no.config(
+        text="Nó afectado: -"
+    )
+
+    alerta_classificacao.config(
+        text="Classificação: -",
+        fg=BRANCO
+    )
+
+    alerta_confianca.config(
+        text="Confiança: -"
+    )
+
+    historico.delete(
+        "1.0",
+        tk.END
+    )
+
+    if monitorizacao_ativa:
+
+        status_operacao.config(
+            text="🟢 MONITORIZAÇÃO ACTIVA",
+            fg=VERDE
+        )
 
     else:
-        mensagem = f"🚨 Ataque Detectado: {resultado}"
 
-    
-    # CORES DOS ALERTAS
-    cor_alerta = "lime"
+        status_operacao.config(
+            text="🔴 MONITORIZAÇÃO PARADA",
+            fg=VERMELHO
+        )
 
-    if "DDoS" in resultado:
-        cor_alerta = "red"
-
-    elif "Port" in resultado:
-        cor_alerta = "orange"
-
-    elif "Bot" in resultado:
-        cor_alerta = "purple"
+    actualizar_nos()
 
 
-    # ACTUALIZA LABELS
-    resultado_label.config(
-    text=f"Resultado: {mensagem}",
-    fg=cor_alerta
-)
-    requisições_label.config(
-    text=f"Requisições: {dados['requisições']}"
-)
+# ============================================================
 
-    duração_label.config(
-        text=f"Duração do Fluxo: {dados['duração']}"
+# CRIAR JANELA
+
+# ============================================================
+
+def iniciar_sistema():
+
+
+    global janela
+    global frame_nos
+    global status_sistema
+    global status_operacao
+    global alertas_label
+    global pacotes_label
+    global nos_label
+    global alerta_titulo
+    global alerta_tipo
+    global alerta_origem
+    global alerta_destino
+    global alerta_no
+    global alerta_classificacao
+    global alerta_confianca
+    global historico
+    global ataque_var
+    global no_var
+
+    janela = tk.Tk()
+
+    janela.title(
+        "CyberShield AI - IDS"
     )
 
-    retorno_label.config(
-        text=f"Pacotes de Retorno: {dados['pacotes_retorno']}"
+    janela.geometry(
+        "1100x950"
     )
 
-    tipo_label.config(
-       text=f"Tipo Detectado: {resultado}"
+    janela.configure(
+        bg=BG_PRINCIPAL
     )
 
-  
-    # RELÓGIO
-  
+    # ========================================================
+    # CABEÇALHO
+    # ========================================================
 
-    hora_actual = datetime.now().strftime("%H:%M:%S")
-
-    relógio_label.config(
-        text=f"Hora: {hora_actual}"
+    titulo = tk.Label(
+        janela,
+        text="CYBERSHIELD AI",
+        font=("Times New Roman", 25, "bold"),
+        bg=BG_PRINCIPAL,
+        fg=CYAN
     )
 
-   
+    titulo.pack(
+        pady=(12, 2)
+    )
+
+    subtitulo = tk.Label(
+        janela,
+        text="SISTEMA DE DETECÇÃO DE INTRUSÕES",
+        font=("Times New Roman", 10),
+        bg=BG_PRINCIPAL,
+        fg=CINZENTO
+    )
+
+    subtitulo.pack(
+        pady=(0, 10)
+    )
+
+    # ========================================================
+    # STATUS
+    # ========================================================
+
+    frame_status = tk.Frame(
+        janela,
+        bg=BG_PRINCIPAL
+    )
+
+    frame_status.pack(
+        fill="x",
+        padx=20
+    )
+
+    status_sistema = tk.Label(
+        frame_status,
+        text="🟢 SISTEMA ONLINE",
+        font=("Times New Roman", 11, "bold"),
+        bg=BG_CARD,
+        fg=VERDE,
+        bd=2,
+        relief="ridge",
+        padx=15,
+        pady=10
+    )
+
+    status_sistema.pack(
+        side="left",
+        expand=True,
+        fill="x",
+        padx=4
+    )
+
+    status_operacao = tk.Label(
+        frame_status,
+        text="🔴 MONITORIZAÇÃO PARADA",
+        font=("Times New Roman", 11, "bold"),
+        bg=BG_CARD,
+        fg=VERMELHO,
+        bd=2,
+        relief="ridge",
+        padx=15,
+        pady=10
+    )
+
+    status_operacao.pack(
+        side="left",
+        expand=True,
+        fill="x",
+        padx=4
+    )
+
+    nos_label = tk.Label(
+        frame_status,
+        text="NÓS ACTIVOS: 3",
+        font=("Times New Roman", 11, "bold"),
+        bg=BG_CARD,
+        fg=CYAN,
+        bd=2,
+        relief="ridge",
+        padx=15,
+        pady=10
+    )
+
+    nos_label.pack(
+        side="left",
+        expand=True,
+        fill="x",
+        padx=4
+    )
+
+    alertas_label = tk.Label(
+        frame_status,
+        text="AMEAÇAS: 0",
+        font=("Times New Roman", 11, "bold"),
+        bg=BG_CARD,
+        fg=VERMELHO,
+        bd=2,
+        relief="ridge",
+        padx=15,
+        pady=10
+    )
+
+    alertas_label.pack(
+        side="left",
+        expand=True,
+        fill="x",
+        padx=4
+    )
+
+    pacotes_label = tk.Label(
+        frame_status,
+        text="PACOTES: 0",
+        font=("Times New Roman", 11, "bold"),
+        bg=BG_CARD,
+        fg=BRANCO,
+        bd=2,
+        relief="ridge",
+        padx=15,
+        pady=10
+    )
+
+    pacotes_label.pack(
+        side="left",
+        expand=True,
+        fill="x",
+        padx=4
+    )
+
+    # ========================================================
+    # NÓS DA REDE
+    # ========================================================
+
+    tk.Label(
+        janela,
+        text="NÓS DA REDE",
+        font=("Times New Roman", 14, "bold"),
+        bg=BG_PRINCIPAL,
+        fg=CYAN
+    ).pack(
+        anchor="w",
+        padx=20,
+        pady=(15, 5)
+    )
+
+    frame_nos = tk.Frame(
+        janela,
+        bg=BG_PRINCIPAL
+    )
+
+    frame_nos.pack(
+        fill="x",
+        padx=20
+    )
+
+    actualizar_nos()
+
+    # ========================================================
+    # ALERTA
+    # ========================================================
+
+    frame_alerta = tk.Frame(
+        janela,
+        bg=BG_CARD,
+        bd=2,
+        relief="ridge"
+    )
+
+    frame_alerta.pack(
+        fill="x",
+        padx=20,
+        pady=15
+    )
+
+    tk.Label(
+        frame_alerta,
+        text="ALERTA DE SEGURANÇA",
+        font=("Times New Roman", 13, "bold"),
+        bg=BG_CARD,
+        fg=CYAN
+    ).pack(
+        anchor="w",
+        padx=15,
+        pady=(10, 5)
+    )
+
+    alerta_titulo = tk.Label(
+        frame_alerta,
+        text="AGUARDANDO DETECÇÃO",
+        font=("Times New Roman", 13, "bold"),
+        bg=BG_CARD,
+        fg=CYAN
+    )
+
+    alerta_titulo.pack(
+        anchor="w",
+        padx=15,
+        pady=5
+    )
+
+    alerta_tipo = tk.Label(
+        frame_alerta,
+        text="Tipo: -",
+        font=("Times New Roman", 10),
+        bg=BG_CARD,
+        fg=BRANCO
+    )
+
+    alerta_tipo.pack(
+        anchor="w",
+        padx=15
+    )
+
+    alerta_origem = tk.Label(
+        frame_alerta,
+        text="Origem: -",
+        font=("Times New Roman", 10),
+        bg=BG_CARD,
+        fg=BRANCO
+    )
+
+    alerta_origem.pack(
+        anchor="w",
+        padx=15
+    )
+
+    alerta_destino = tk.Label(
+        frame_alerta,
+        text="Destino: -",
+        font=("Times New Roman", 10),
+        bg=BG_CARD,
+        fg=BRANCO
+    )
+
+    alerta_destino.pack(
+        anchor="w",
+        padx=15
+    )
+
+    alerta_no = tk.Label(
+        frame_alerta,
+        text="Nó afectado: -",
+        font=("Times New Roman", 10),
+        bg=BG_CARD,
+        fg=BRANCO
+    )
+
+    alerta_no.pack(
+        anchor="w",
+        padx=15
+    )
+
+    alerta_classificacao = tk.Label(
+        frame_alerta,
+        text="Classificação: -",
+        font=("Times New Roman", 10, "bold"),
+        bg=BG_CARD,
+        fg=BRANCO
+    )
+
+    alerta_classificacao.pack(
+        anchor="w",
+        padx=15
+    )
+
+    alerta_confianca = tk.Label(
+        frame_alerta,
+        text="Confiança: -",
+        font=("Times New Roman", 10),
+        bg=BG_CARD,
+        fg=BRANCO
+    )
+
+    alerta_confianca.pack(
+        anchor="w",
+        padx=15,
+        pady=(0, 10)
+    )
+
+    # ========================================================
+    # PARTE INFERIOR
+    # ========================================================
+
+    frame_inferior = tk.Frame(
+        janela,
+        bg=BG_PRINCIPAL
+    )
+
+    frame_inferior.pack(
+        fill="both",
+        expand=True,
+        padx=20,
+        pady=(0, 10)
+    )
+
+    # ========================================================
     # HISTÓRICO
-  
+    # ========================================================
 
-    histórico.insert(
-        tk.END,
-        f"[{hora_actual}] {resultado}\n"
+    frame_historico = tk.Frame(
+        frame_inferior,
+        bg=BG_CARD,
+        bd=2,
+        relief="ridge"
     )
 
-    histórico.see(tk.END)
+    frame_historico.pack(
+        side="left",
+        fill="both",
+        expand=True,
+        padx=(0, 5)
+    )
 
-    # ACTUALIZA GRÁFICO
-   
+    tk.Label(
+        frame_historico,
+        text="HISTÓRICO DE ALERTAS",
+        font=("Times New Roman", 12, "bold"),
+        bg=BG_CARD,
+        fg=CYAN
+    ).pack(
+        anchor="w",
+        padx=10,
+        pady=8
+    )
 
-    x_dados.append(len(x_dados))
+    historico = tk.Text(
+        frame_historico,
+        bg="#000000",
+        fg=VERDE,
+        font=("Consolas", 9),
+        height=8,
+        relief="flat"
+    )
 
-    y_dados.append(dados["requisições"])
+    historico.pack(
+        fill="both",
+        expand=True,
+        padx=10,
+        pady=(0, 10)
+    )
 
-    if len(x_dados) > 15:
+    # ========================================================
+    # CONTROLO DA SIMULAÇÃO
+    # ========================================================
 
-        x_dados.pop(0)
+    frame_controlos = tk.Frame(
+        frame_inferior,
+        bg=BG_CARD,
+        bd=2,
+        relief="ridge",
+        width=500
+    )
 
-        y_dados.pop(0)
+    frame_controlos.pack(
+        side="right",
+        fill="both",
+        expand=True,
+        padx=(5, 0)
+    )
+    frame_controlos.pack_propagate(False)
 
-    gráfico.clear()
+    tk.Label(
+        frame_controlos,
+        text="CONTROLO DA SIMULAÇÃO",
+        font=("Times New Roman", 12, "bold"),
+        bg=BG_CARD,
+        fg=CYAN
+    ).pack(
+        pady=(8, 5)
+    )
 
-    gráfico.plot(x_dados, y_dados)
+    # ========================================================
+    # SELECÇÃO
+    # ========================================================
+    
 
-    gráfico.set_title("Tráfego da Rede")
+    frame_seleccao = tk.Frame(
+        frame_controlos,
+        bg=BG_CARD
+    )
 
-    gráfico.set_ylabel("Pacotes")
+    frame_seleccao.pack(
+        fill="x",
+        padx=15
+    )
 
-    canvas.draw()
+# ---------------- ATAQUE ----------------
 
-    # GUARDA LOGS
-    #
+    tk.Label(
+        frame_seleccao,
+        text="Tipo de ataque:",
+        font=("Times New Roman", 9, "bold"),
+        bg=BG_CARD,
+        fg=BRANCO
+    ).grid(
+        row=0,
+        column=0,
+        padx=5,
+        pady=4,
+        sticky="w"
+    )
 
-    with open("logs.txt", "a", encoding="utf-8") as log:
+    ataque_var = tk.StringVar(
+        value="DDoS"
+    )
 
-        log.write(f"[{hora_actual}] {resultado}\n")
+    ataque_combo = ttk.Combobox(
+        frame_seleccao,
+        textvariable=ataque_var,
+        values=[
+            "DDoS",
+            "Brute Force",
+            "Phishing",
+            "Ransomware"
+        ],
+        state="readonly",
+        width=18
+    )
+
+    ataque_combo.grid(
+        row=0,
+        column=1,
+        padx=5,
+        pady=4
+    )
+
+    # ---------------- NÓ ALVO ----------------
+
+    tk.Label(
+        frame_seleccao,
+        text="Nó alvo:",
+        font=("Times New Roman", 9, "bold"),
+        bg=BG_CARD,
+        fg=BRANCO
+    ).grid(
+        row=1,
+        column=0,
+        padx=5,
+        pady=4,
+        sticky="w"
+    )
+
+    no_var = tk.StringVar(
+        value="NODE 03"
+    )
+
+    no_combo = ttk.Combobox(
+        frame_seleccao,
+        textvariable=no_var,
+        values=list(nos.keys()),
+        state="readonly",
+        width=18
+    )
+
+    no_combo.grid(
+        row=1,
+        column=1,
+        padx=5,
+        pady=4
+    )
+
+    # ========================================================
+    # BOTÃO INICIAR MONITORIZAÇÃO
+    # ========================================================
 
     
-    # ACTUALIZA NOVAMENTE
-   
 
-    janela.after(3000, atualizar_dados)
+    frame_botoes = tk.Frame(
+        frame_controlos,
+        bg=BG_CARD
+    )
+
+    frame_botoes.pack(
+        fill="x",
+        padx=20,
+        pady=8
+    )
+
+    botao_iniciar = tk.Button(
+        frame_botoes,
+        text="▶ INICIAR MONITORIZAÇÃO",
+        command=iniciar_monitorizacao,
+        bg="#166534",
+        fg=BRANCO,
+        font=("Arial", 9, "bold"),
+        relief="flat",
+        height=2
+    )
+
+    botao_iniciar.grid(
+        row=0,
+        column=0,
+        padx=5,
+        pady=5,
+        sticky="ew"
+    )
+
+    botao_ataque = tk.Button(
+        frame_botoes,
+        text="⚔ INICIAR ATAQUE",
+        bg="#991b1b",
+        fg=BRANCO,
+        font=("Arial", 9, "bold"),
+        relief="flat",
+        height=2
+    )
+
+    botao_ataque.grid(
+        row=0,
+        column=1,
+        padx=5,
+        pady=5,
+        sticky="ew"
+    )
+
+    botao_parar = tk.Button(
+        frame_botoes,
+        text="■ PARAR MONITORIZAÇÃO",
+        command=parar_monitorizacao,
+        bg="#7f1d1d",
+        fg=BRANCO,
+        font=("Arial", 9, "bold"),
+        relief="flat",
+        height=2
+    )
+
+    botao_parar.grid(
+        row=1,
+        column=0,
+        padx=5,
+        pady=5,
+        sticky="ew"
+    )
+
+    botao_limpar = tk.Button(
+        frame_botoes,
+        text="🗑 LIMPAR ALERTAS",
+        command=limpar_resultados,
+        bg="#334155",
+        fg=BRANCO,
+        font=("Arial", 9, "bold"),
+        relief="flat",
+        height=2
+    )
+
+    botao_limpar.grid(
+        row=1,
+        column=1,
+        padx=5,
+        pady=5,
+        sticky="ew"
+    )
+
+    frame_botoes.columnconfigure(0, weight=1)
+    frame_botoes.columnconfigure(1, weight=1)
+    # ========================================================
+    # EXECUTAR SISTEMA
+    # ========================================================
+
+    janela.mainloop()
+
+
+    # ============================================================
+
+    # INICIAR A APLICAÇÃO
+
+    # ============================================================
 
-
-
-# CRIA JANELA
-
-janela = tk.Tk()
-
-janela.title("CyberShield AI - IDS")
-
-janela.geometry("900x700")
-
-janela.configure(bg="#0f172a")
-
-
-# TÍTULO
-
-
-titulo = tk.Label(
-    janela,
-    text="CYBERSHIELD AI",
-    font=("Arial", 24, "bold"),
-    bg="#0f172a",
-    fg="cyan"
-)
-
-titulo.pack(pady=10)
-
-# STATUS
-
-status_label = tk.Label(
-    janela,
-    text="🟢 SISTEMA ONLINE",
-    font=("Arial", 14, "bold"),
-    bg="#0f172a",
-    fg="lime"
-)
-
-status_label.pack()
-
-
-
-# RELÓGIO
-
-
-relógio_label = tk.Label(
-    janela,
-    text="Hora:",
-    font=("Arial", 12),
-    bg="#0f172a",
-    fg="white"
-)
-
-relógio_label.pack(pady=5)
-
-# FRAME DOS DADOS
-
-frame_dados = tk.Frame(
-    janela,
-    bg="#1e293b",
-    bd=2,
-    relief="ridge"
-)
-
-frame_dados.pack(pady=15, padx=20, fill="x")
-
-# LABELS DOS DADOS
-
-
-requisições_label = tk.Label(
-    frame_dados,
-    font=("Arial", 12),
-    bg="#1e293b",
-    fg="white"
-)
-
-requisições_label.pack(pady=5)
-
-
-duração_label = tk.Label(
-    frame_dados,
-    font=("Arial", 12),
-    bg="#1e293b",
-    fg="white"
-)
-
-duração_label.pack(pady=5)
-
-
-retorno_label = tk.Label(
-    frame_dados,
-    font=("Arial", 12),
-    bg="#1e293b",
-    fg="white"
-)
-
-retorno_label.pack(pady=5)
-
-
-tipo_label = tk.Label(
-    frame_dados,
-    font=("Arial", 12),
-    bg="#1e293b",
-    fg="white"
-)
-
-tipo_label.pack(pady=5)
-
-# RESULTADO
-
-
-resultado_label = tk.Label(
-    janela,
-    text="",
-    font=("Arial", 16, "bold"),
-    bg="#0f172a"
-)
-
-resultado_label.pack(pady=20)
-
-
-# HISTÓRICO
-#
-
-histórico_titulo = tk.Label(
-    janela,
-    text="Histórico de Alertas",
-    font=("Arial", 14, "bold"),
-    bg="#0f172a",
-    fg="cyan"
-)
-
-histórico_titulo.pack()
-
-
-histórico = tk.Text(
-    janela,
-    height=8,
-    bg="black",
-    fg="lime",
-    font=("Consolas", 10)
-)
-
-histórico.pack(padx=20, pady=10, fill="x")
-
-# GRÁFICO
-
-figura = Figure(figsize=(6, 3), dpi=100)
-
-gráfico = figura.add_subplot(111)
-
-canvas = FigureCanvasTkAgg(figura, master=janela)
-
-canvas.get_tk_widget().pack(pady=10)
-figura.patch.set_facecolor("#1e293b")
-
-gráfico.set_facecolor("#1e293b")
-
-gráfico.tick_params(colors="white")
-
-gráfico.spines["bottom"].set_color("white")
-gráfico.spines["top"].set_color("white")
-gráfico.spines["left"].set_color("white")
-gráfico.spines["right"].set_color("white")
-
-gráfico.title.set_color("white")
-
-gráfico.yaxis.label.set_color("white")
-
-
-
-# INICIA SISTEMA
-
-
-atualizar_dados()
-
-
-
-# MANTÉM JANELA ABERTA
-# 
-
-janela.mainloop()
+iniciar_sistema()
