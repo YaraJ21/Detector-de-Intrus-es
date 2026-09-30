@@ -1,27 +1,15 @@
 import tkinter as tk
 from tkinter import ttk
 from datetime import datetime
-
+from estado_rede import obter_nos_para_interface
+import subprocess
 # ============================================================
 
 # CONFIGURAÇÃO DOS NÓS SIMULADOS
 
 # ============================================================
 
-nos = {
-"NODE 01": {
-"ip": "192.168.1.10",
-"estado": "ACTIVO"
-},
-"NODE 02": {
-"ip": "192.168.1.11",
-"estado": "ACTIVO"
-},
-"NODE 03": {
-"ip": "192.168.1.12",
-"estado": "ACTIVO"
-}
-}
+nos = nos = obter_nos_para_interface()
 
 # ============================================================
 
@@ -118,6 +106,14 @@ def actualizar_nos():
             fg=cor
         ).pack(pady=10)
 
+        tk.Label(
+            card,
+            text=f"Detecção: {dados['predicao']}",
+            font=("Arial", 10),
+            bg=BG_CARD_2,
+            fg=BRANCO
+        ).pack(pady=(0, 10))
+
 
 # ============================================================
 
@@ -134,7 +130,28 @@ def actualizar_estado_no(nome_no, estado):
     actualizar_nos()
     actualizar_contador_nos()
 
+    ameacas = sum(
+        1 for dados in nos.values()
+        if dados["predicao"] not in ("BENIGN", "UNKNOWN")
+    )
+    alertas_label.config(text=f"AMEAÇAS: {ameacas}")
 
+    for nome, dados in novos_nos.items():
+
+        print(">>> VERIFICANDO:", dados["predicao"])
+
+        if dados["predicao"] not in ("BENIGN", "UNKNOWN"): 
+           alerta_titulo.config(
+                text="⚠ ATAQUE DETECTADO",
+                fg=VERMELHO
+           )
+           # alerta_titulo.config(text="TESTE ATAQUE")
+           # print(">>> ALERTA VISUAL EXECUTADO")
+           
+        alerta_tipo.config(text=f"Tipo: {dados['predicao']}")
+        alerta_origem.config(text=f"Origem: {dados['ip']}")
+        alerta_no.config(text=f"Nó afectado: {nome}")
+        break
 # ============================================================
 
 # ACTUALIZAR CONTADOR DE NÓS
@@ -191,14 +208,8 @@ def mostrar_alerta(resultado):
         text=f"Nó afectado: {no_afectado}"
     )
 
-    alerta_classificacao.config(
-        text="Classificação: MALICIOSO",
-        fg=VERMELHO
-    )
+   
 
-    alerta_confianca.config(
-        text=f"Confiança: {confianca * 100:.0f}%"
-    )
 
     actualizar_estado_no(
         no_afectado,
@@ -212,8 +223,95 @@ def mostrar_alerta(resultado):
 
     # ============================================================
 
+
+def actualizar_estado_rede():
+    print(">>> ACTUALIZANDO ESTADO DA REDE")
+
+    global nos
+
+    novos_nos = obter_nos_para_interface()
+
+    # Contar apenas as ameaças do estado ACTUAL
+    ameacas = sum(
+        1
+        for dados in novos_nos.values()
+        if dados["predicao"] not in ("BENIGN", "UNKNOWN")
+    )
+
+    alertas_label.config(text=f"AMEAÇAS: {ameacas}")
+
+    print(">>> AMEAÇAS CALCULADAS:", ameacas)
+    print(">>> DADOS:", novos_nos)
+
+    # Actualizar os dados dos nós
+    for nome, dados in novos_nos.items():
+        if nome in nos:
+            nos[nome].update(dados)
+
+    print(">>> NOS NA INTERFACE:", nos)
+
+    # Procurar uma ameaça no estado ACTUAL
+    ataque_detectado = False
+
+    for nome, dados in novos_nos.items():
+        print(">>> VERIFICANDO:", dados["predicao"])
+
+        if dados["predicao"] not in ("BENIGN", "UNKNOWN"):
+            alerta_titulo.config(
+                text="⚠ ATAQUE DETECTADO",
+                fg=VERMELHO
+            )
+
+            alerta_tipo.config(
+                text=f"Tipo: {dados['predicao']}"
+            )
+
+            alerta_origem.config(
+                text=f"Origem: {dados['ip']}"
+            )
+
+            alerta_no.config(
+                text=f"Nó afectado: {nome}"
+            )
+
+            ataque_detectado = True
+            break
+
+    # Se o estado actual estiver limpo, limpar o alerta anterior
+    if not ataque_detectado:
+        alerta_titulo.config(
+            text="✓ REDE NORMAL",
+            fg=VERDE
+        )
+
+        alerta_tipo.config(
+            text="Tipo: Nenhuma ameaça detectada"
+        )
+
+        alerta_origem.config(
+            text="Origem: —"
+        )
+
+        alerta_no.config(
+            text="Nó afectado: —"
+        )
+
+        print(">>> NENHUM ATAQUE DETECTADO — ALERTA LIMPO")
+
+    actualizar_nos()
+    actualizar_contador_nos()
+
+    if monitorizacao_ativa:
+        janela.after(3000, actualizar_estado_rede)
+    actualizar_nos()
+    actualizar_contador_nos()
+
+    if monitorizacao_ativa:
+        janela.after(3000, actualizar_estado_rede)
+
 def iniciar_monitorizacao():
 
+    print(">>> INICIAR MONITORIZAÇÃO FOI CHAMADO")
 
     global monitorizacao_ativa
 
@@ -228,6 +326,8 @@ def iniciar_monitorizacao():
         text="🟢 MONITORIZAÇÃO ACTIVA",
         fg=VERDE
     )
+
+    actualizar_estado_rede()
 
 
 # ============================================================
@@ -293,22 +393,11 @@ def limpar_resultados():
         text="Origem: -"
     )
 
-    alerta_destino.config(
-        text="Destino: -"
-    )
-
     alerta_no.config(
         text="Nó afectado: -"
     )
 
-    alerta_classificacao.config(
-        text="Classificação: -",
-        fg=BRANCO
-    )
 
-    alerta_confianca.config(
-        text="Confiança: -"
-    )
 
     historico.delete(
         "1.0",
@@ -332,6 +421,54 @@ def limpar_resultados():
     actualizar_nos()
 
 
+
+#========================ATAQUE 
+def iniciar_ataque():
+    tipo = ataque_var.get()
+    alvo = no_var.get()
+
+    print(">>> ATAQUE INICIADO")
+    print(">>> TIPO:", tipo)
+    print(">>> ALVO:", alvo)
+
+    ip_alvo = nos[alvo]["ip"]
+
+    subprocess.Popen([
+        "docker", "exec",
+        "cybershield-node01",
+        "python", "-c",
+        f"""
+import urllib.request
+import time
+
+for i in range(30):
+    try:
+        urllib.request.urlopen('http://{ip_alvo}:8000', timeout=1)
+    except:
+        pass
+"""
+    ])
+
+    alerta_titulo.config(
+        text="⚠ ATAQUE SIMULADO",
+        fg=VERMELHO
+    )
+
+    alerta_tipo.config(
+        text=f"Tipo: {tipo}"
+    )
+
+    alerta_no.config(
+        text=f"Nó afectado: {alvo}"
+    )
+    hora = datetime.now().strftime("%H:%M:%S")
+
+    historico.insert(
+        "end",
+        f"{hora}  {tipo} — {alvo}\n"
+    )
+
+    historico.see("end")
 # ============================================================
 
 # CRIAR JANELA
@@ -339,8 +476,9 @@ def limpar_resultados():
 # ============================================================
 
 def iniciar_sistema():
+    print(">>> INICIAR_SISTEMA FOI CHAMADO")
 
-
+    ultimo_ataque = None
     global janela
     global frame_nos
     global status_sistema
@@ -351,10 +489,7 @@ def iniciar_sistema():
     global alerta_titulo
     global alerta_tipo
     global alerta_origem
-    global alerta_destino
     global alerta_no
-    global alerta_classificacao
-    global alerta_confianca
     global historico
     global ataque_var
     global no_var
@@ -607,18 +742,6 @@ def iniciar_sistema():
         padx=15
     )
 
-    alerta_destino = tk.Label(
-        frame_alerta,
-        text="Destino: -",
-        font=("Times New Roman", 10),
-        bg=BG_CARD,
-        fg=BRANCO
-    )
-
-    alerta_destino.pack(
-        anchor="w",
-        padx=15
-    )
 
     alerta_no = tk.Label(
         frame_alerta,
@@ -633,32 +756,6 @@ def iniciar_sistema():
         padx=15
     )
 
-    alerta_classificacao = tk.Label(
-        frame_alerta,
-        text="Classificação: -",
-        font=("Times New Roman", 10, "bold"),
-        bg=BG_CARD,
-        fg=BRANCO
-    )
-
-    alerta_classificacao.pack(
-        anchor="w",
-        padx=15
-    )
-
-    alerta_confianca = tk.Label(
-        frame_alerta,
-        text="Confiança: -",
-        font=("Times New Roman", 10),
-        bg=BG_CARD,
-        fg=BRANCO
-    )
-
-    alerta_confianca.pack(
-        anchor="w",
-        padx=15,
-        pady=(0, 10)
-    )
 
     # ========================================================
     # PARTE INFERIOR
@@ -766,6 +863,7 @@ def iniciar_sistema():
         fill="x",
         padx=15
     )
+
 
 # ---------------- ATAQUE ----------------
 
@@ -885,7 +983,8 @@ def iniciar_sistema():
         fg=BRANCO,
         font=("Arial", 9, "bold"),
         relief="flat",
-        height=2
+        height=2,
+        command=iniciar_ataque
     )
 
     botao_ataque.grid(
@@ -936,10 +1035,14 @@ def iniciar_sistema():
 
     frame_botoes.columnconfigure(0, weight=1)
     frame_botoes.columnconfigure(1, weight=1)
+
+
+
+
     # ========================================================
     # EXECUTAR SISTEMA
     # ========================================================
-
+    print(">>> CHEGOU AO MAINLOOP")
     janela.mainloop()
 
 

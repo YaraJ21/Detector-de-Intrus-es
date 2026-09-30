@@ -3,24 +3,24 @@
         "name": "node01",
         "status": "ACTIVE",
         "prediction": "BENIGN",
-        "packets": 170,
-        "activity_score": 170,
-        "last_seen": "17:42:10"
+        "packets": 1909,
+        "activity_score": 1909,
+        "last_seen": "10:29:34"
     },
     "10.10.0.11": {
         "name": "node02",
         "status": "ACTIVE",
-        "prediction": "PortScan",
-        "packets": 850,
-        "activity_score": 850,
-        "last_seen": "17:42:11"
+        "prediction": "DDoS",
+        "packets": 1941,
+        "activity_score": 1941,
+        "last_seen": "10:29:34"
     },
     "10.10.0.12": {
         "name": "node03",
-        "status": "INACTIVE",
-        "prediction": "UNKNOWN",
-        "packets": 0,
-        "activity_score": 0,
-        "last_seen": null
+        "status": "ACTIVE",
+        "prediction": "BENIGN",
+        "packets": 1905,
+        "activity_score": 1905,
+        "last_seen": "10:29:34"
     }
 }
